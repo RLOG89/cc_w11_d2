@@ -18,6 +18,7 @@ MapWrapper.prototype = {
     marker.addListener('click', function() {
      infowindow.open(this, marker);
    });
+    return marker;
   },
 
   addClickEvent: function() {
@@ -29,27 +30,20 @@ MapWrapper.prototype = {
     }.bind(this));
   },
 
-  addInfoWindow: function(coords) {
-    var contentString = '<div id="content">'+
-    '<div id="siteNotice">'+
-    '</div>'+
-    '<h1 id="firstHeading" class="firstHeading">CodeClan</h1>'+
-    '<div id="bodyContent">'+
-    '<p><b>CodeClan</b>, also referred to as <i>the place dreams are made of</i>, ' + 
-    'is a pretty cool place! </p>' + 
-    '</div>'+
-    '</div>';
-    var infowindow = new google.maps.InfoWindow({
-      position: coords,
-      content: contentString,
-      map: this.googleMap
+  addInfoWindow: function(coords, contentString) {
+    var marker = this.addMarker(coords);
+    marker.addListener('click', function() {
+      var infowindow = new google.maps.InfoWindow({
+        position: coords,
+        content: contentString,
+        map: this.googleMap
+      });
+      infowindow.open(this.map, marker);
     });
-  // marker.addListener('click', function() {
-  //       infowindow.open(map);
-  // });
   },
-setCenter: function(coords) {
-  this.googleMap.setCenter(coords)
+
+  setCenter: function(coords) {
+    this.googleMap.setCenter(coords)
   }
 };
 
